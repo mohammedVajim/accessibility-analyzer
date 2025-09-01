@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Accessibility Report</title>
+  <style>
+    /* Color Palette */
+    :root {
+      --primary: #3A86FF;
+      --secondary-green: #06D6A0;
+      --secondary-orange: #FFBE0B;
+      --background: #F9FAFB;
+      --card-bg: #FFFFFF;
+      --text-dark: #111827;
+      --text-muted: #4B5563;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--background);
+      color: var(--text-dark);
+      margin: 20px;
+    }
+
+    h1, h2, h3 {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .report-heading {
+      font-size: 28px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      margin-bottom: 20px;
+     text-transform: uppercase;
+     /*letter-spacing: 2px;*/
+    }
+
+
+    .report-banner {
+      background: var(--card-bg);
+      padding: 1rem;
+      border-left: 6px solid var(--primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .report-status.status-good {
+      color: var(--secondary-green);
+      font-weight: bold;
+    }
+
+    .total-score {
+      font-weight: bold;
+    }
+
+    .report-status.status-bad {
+      color: red;
+      font-weight: bold;
+    }
+
+    .score-metrics {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .metric-card {
+      background: var(--card-bg);
+      padding: 1rem;
+      border-radius: 8px;
+      flex: 1;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .criteria-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .criteria-item {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.3rem 0;
+      color: var(--text-muted);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: var(--primary);
+      color: #fff;
+      text-align: left;
+    }
+
+    .section {
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="report-heading">Audit Report</h1>
+  <!-- Report Banner -->
+  <section class="report-banner">
+    <p class="report-status {% if score >= 95 %}status-good{% else %}status-bad{% endif %}">
+      {{ status_text }}
+    </p>
+    <p class="report-description">{{ description }}</p>
+    <!-- <p class="total-score">{{ total_issues }}</p> -->
+  </section>
+
+  <!-- Score Metrics -->
+  <section class="score-metrics">
+    <div class="metric-card">
+      <h3>Audit Score</h3>
+      <p style="font-size:2rem; font-weight:bold; color:var(--primary);">{{ score }}%</p>
+      <p>Websites with a score lower than 95 are at risk of accessibility lawsuits</p>
+    </div>
+
+    <div class="metric-card">
+      <h3>WCAG 2.2 Criteria</h3>
+      <ul class="criteria-list">
+        <li class="criteria-item"><span>Critical Issues</span><span>{{ critical_issues }}</span></li>
+        <li class="criteria-item"><span>Passed Audits</span><span>{{ passed_audits }}</span></li>
+        <li class="criteria-item"><span>Manual Audits</span><span>{{ manual_audits }}</span></li>
+        <li class="criteria-item"><span>Not Applicable</span><span>{{ not_applicable }}</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Tables -->
+  <div class="section">
+    <h2>Violations</h2>
+    {% if violations %}
+      <table>
+        <thead>
+          <tr><th>Violation</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          {% for v in violations %}
+            <tr><td>{{ v.id }}</td><td>{{ v.description }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No critical issues found 🎉</p>
+    {% endif %}
+  </div>
+
+  <div class="section">
+    <h2>Passed Audits</h2>
+    {% if passes %}
+      <table>
+        <thead><tr><th>Rule</th><th>Description</th></tr></thead>
+        <tbody>
+          {% for p in passes %}
+            <tr><td>{{ p.id }}</td><td>{{ p.description }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No passed audits available.</p>
+    {% endif %}
+  </div>
+
+  <div class="section">
+    <h2>Manual Audits Required</h2>
+    {% if incomplete %}
+      <table>
+        <thead><tr><th>Check</th><th>Description</th></tr></thead>
+        <tbody>
+          {% for m in incomplete %}
+            <tr><td>{{ m.id }}</td><td>{{ m.description }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No manual audits required.</p>
+    {% endif %}
+  </div>
+
+  <div class="section">
+    <h2>Not Applicable</h2>
+    {% if inapplicable %}
+      <table>
+        <thead><tr><th>Rule</th><th>Description</th></tr></thead>
+        <tbody>
+          {% for na in inapplicable %}
+            <tr><td>{{ na.id }}</td><td>{{ na.description }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No rules marked as not applicable.</p>
+    {% endif %}
+  </div>
+
+</body>
+</html>

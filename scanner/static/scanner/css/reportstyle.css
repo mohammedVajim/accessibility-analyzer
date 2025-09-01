@@ -1,0 +1,468 @@
+/* Default Light Theme */
+:root {
+  --primary: #3A86FF;
+  --secondary-green: #06D6A0;
+  --secondary-orange: #FFBE0B;
+  --background: #F9FAFB;
+  --card-bg: #FFFFFF;
+  --text-dark: #111827;
+  --text-muted: #4B5563;
+}
+
+/* Dark Theme Overrides */
+body.dark {
+  --background: #111827;
+  --card-bg: #1F2937;
+  --text-dark: #F9FAFB;
+  --text-muted: #9CA3AF;
+}
+
+/* Reset */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--text-dark);
+  background-color: var(--background);
+  line-height: 1.6;
+  transition: background 0.3s, color 0.3s;
+}
+html { scroll-behavior: smooth; }
+
+h1, h2 {
+  font-family: 'Merriweather', serif;
+}
+
+/* Layout */
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+/* Navbar merged with Audit Header */
+.navbar {
+  background: var(--card-bg);
+  padding: 0.8rem 1.2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.2rem;
+  margin-left: 2rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-dark);
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover {
+  color: var(--primary);
+}
+
+/* Right section */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+/* Download Button */
+.download-btn {
+  background: var(--primary);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: background 0.3s;
+}
+.download-btn i {
+  font-size: 0.9rem;
+}
+.download-btn:hover {
+  background: #265dcc;
+}
+
+
+/* Theme Toggle Button */
+#theme-toggle {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--text-dark);
+  transition: color 0.3s;
+}
+#theme-toggle:hover {
+  color: var(--primary);
+}
+
+
+
+/* Footer */
+.footer {
+  background: var(--card-bg);
+  padding: 2rem 1rem 1rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.footer-left .footer-logo {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.footer-center p {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.footer-right {
+  display: flex;
+  gap: 1rem;
+}
+
+.footer-right a {
+  color: var(--text-muted);
+  font-size: 1.3rem;
+  transition: color 0.3s;
+}
+
+.footer-right a:hover {
+  color: var(--secondary-orange);
+}
+
+.footer-bottom {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* Make footer stick at bottom */
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+/* Report Banner */
+.report-banner {
+  background: var(--background);
+  padding: 2rem 1rem 1rem; 
+  text-align: center;
+  /*border-bottom: 2px solid #e5e7eb;*/
+  /*margin-bottom: 0.5rem;*/
+}
+
+.banner-content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/*.report-title {
+  font-size: 2.25rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+*/
+.report-status {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.status-good {
+  color: var(--secondary-green);
+}
+.status-bad {
+  color: #ef4444; /* red */
+}
+
+.report-description {
+  color: var(--text-muted);
+  margin-bottom: 1rem; 
+}
+
+.cta-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.cta-btn:hover {
+  background: #265dcc;
+}
+
+
+/* Metrics Section */
+.score-metrics {
+  background: var(--background);
+  padding: 0.5rem 0;    /* was 1.5rem */
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;   /* reduced spacing */
+}
+
+.metric-card {
+  background: var(--card-bg);
+  padding: 3rem;   /* was 1.5rem */
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.metric-title {
+  font-size: 1rem;   /* smaller */
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--text-dark);
+}
+
+/* Circular Progress (smaller again) */
+.progress-circle {
+  --size: 70px;   /* was 100px */
+  --stroke: 8px;  /* was 10px */
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.5rem;   /* tighter */
+  background: conic-gradient(
+    var(--primary) calc(var(--progress) * 1%), 
+    #e5e7eb 0
+  );
+}
+
+.progress-circle::before {
+  content: "";
+  position: absolute;
+  width: calc(var(--size) - var(--stroke)*2);
+  height: calc(var(--size) - var(--stroke)*2);
+  border-radius: 50%;
+  background: var(--card-bg);
+}
+
+.progress-value {
+  position: absolute;
+  font-size: 0.9rem;   /* smaller text */
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.metric-description {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  line-height: 1.2;
+}
+
+
+/*second card*/
+.criteria-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.criteria-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.criteria-item:last-child {
+  border-bottom: none;
+}
+
+.criteria-item .icon {
+  margin-right: 0.5rem;
+  font-size: 1rem;
+}
+
+.criteria-item .label {
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+}
+
+.criteria-item .value {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+/* Colors per category */
+.criteria-item.critical .icon {
+  color: #ef4444;
+}
+.criteria-item.passed .icon {
+  color: var(--secondary-green);
+}
+.criteria-item.manual .icon {
+  color: var(--secondary-orange);
+}
+.criteria-item.na .icon {
+  color: var(--text-muted);
+}
+
+/* Navigation Pills Section */
+.nav-pills-section {
+  background: var(--background);
+  /*padding: 0.5rem 0;    /* was 1.5rem */*/
+}
+.nav-pills {
+  list-style: none;
+  display: flex;
+  margin: 1rem 0;
+  padding: 0;
+  border-bottom: 2px solid #e5e7eb;
+  width: 100%;
+}
+
+.pill {
+  flex: 1; /* 👈 each pill takes equal space */
+  text-align: center;
+  padding: 0.75rem 1rem;
+  border-radius: 0; /* flat edges so they touch nicely */
+  cursor: pointer;
+  font-weight: 500;
+  background: var(--card-bg);
+  color: var(--text-dark);
+  transition: background 0.2s, color 0.2s;
+  border-right: 1px solid #e5e7eb; /* divider between pills */
+}
+
+.pill:last-child {
+  border-right: none; /* remove divider on last */
+}
+
+.pill.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.pill:hover {
+  background: var(--secondary-green);
+  color: #fff;
+}
+
+/* Panels */
+.pill-panel {
+  display: none;
+  margin-top: 1rem;
+}
+.pill-panel.active {
+  display: block;
+}
+
+/* Tables */
+.issues-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.issues-table th,
+.issues-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.issues-table th {
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.issues-table tr {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.dark .issues-table tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.issues-table tr:last-child {
+  border-bottom: none;
+}
+
+.issues-table td {
+  color: var(--text-dark);
+}
+
+.issues-table tr:hover {
+  background: rgba(58, 134, 255, 0.05); /* light blue hover */
+}
+
+body.dark .issues-table tr:hover {
+  background: rgba(58, 134, 255, 0.1); /* subtle hover for dark */
+}
+
+/*AI fix modal*/
+/*#ai-fix-body {
+  font-size: 0.95rem;
+  background: var(--background);
+  padding: 1rem;
+  border-radius: 8px;
+}
+*/
+
+

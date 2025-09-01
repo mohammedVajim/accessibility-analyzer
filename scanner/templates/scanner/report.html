@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Accessibility Checker</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'scanner/css/reportstyle.css' %}"/>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Merriweather:wght@700&family=Fira+Code&display=swap" rel="stylesheet">
+
+   <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+  <nav class="navbar">
+  <div class="logo">Audit Report</div>
+
+  <ul class="nav-links">
+    <li><a href="{% url 'home' %}">Home</a></li>
+  </ul>
+
+  <div class="nav-actions">
+    <button id="theme-toggle" aria-label="Toggle Theme">
+      <i class="fas fa-moon"></i>
+    </button>
+    <a href="{% url 'download_report' %}" class="download-btn" download>
+      <i class="fas fa-download"></i> Download Report
+    </a>
+  </div>
+</nav>
+
+<main>
+  <!-- Report Banner Section -->
+<section class="report-banner">
+  <div class="container">
+    <div class="banner-content">
+      <!-- <h1 class="report-title">Accessibility Audit Report</h1> -->
+      <p class="report-status 
+          {% if score >= 95 %}status-good{% else %}status-bad{% endif %}">
+        {{ status_text }} 
+        <!-- – Score: {{ score }}% -->
+      </p>
+      <p class="report-description">{{ description }}</p>
+      <!-- <button id="fix-btn" class="cta-btn">
+        Fix Issues ({{ total_issues }})
+      </button> -->
+
+      <!-- Fix Issues Button -->
+<button id="fix-btn" class="cta-btn" data-bs-toggle="modal" data-bs-target="#aiFixModal">
+  Fix Issues ({{ total_issues }})
+</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- Score Card Section -->
+<section class="score-metrics">
+  <div class="container metrics-grid">
+
+    <!-- Score Card -->
+    <div class="metric-card">
+      <h3 class="metric-title">Audit Score</h3>
+      
+      <!-- Circular Progress -->
+      <div class="progress-circle" data-progress="{{ score }}">
+        <span class="progress-value">{{ score }}%</span>
+      </div>
+
+      <p class="metric-description">
+        Websites with a score lower than 95 are at risk of accessibility lawsuits
+      </p>
+    </div>
+
+    <!-- 2nd Card -->
+   <div class="metric-card">
+  <h3 class="metric-title">WCAG 2.2 Criteria</h3>
+  <ul class="criteria-list">
+    <li class="criteria-item critical">
+      <i class="fas fa-triangle-exclamation icon"></i>
+      <span class="label">Critical Issues</span>
+      <span class="value">{{ critical_issues }}</span>
+    </li>
+    <li class="criteria-item passed">
+      <i class="fas fa-circle-check icon"></i>
+      <span class="label">Passed Audits</span>
+      <span class="value">{{ passed_audits }}</span>
+    </li>
+    <li class="criteria-item manual">
+      <i class="fas fa-clipboard-list icon"></i>
+      <span class="label">Required Manual Audits</span>
+      <span class="value">{{ manual_audits }}</span>
+    </li>
+    <li class="criteria-item na">
+      <i class="fas fa-minus-circle icon"></i>
+      <span class="label">Not Applicable</span>
+      <span class="value">{{ not_applicable }}</span>
+    </li>
+  </ul>
+</div>
+ </div>
+</section>
+
+<!-- Navigation Pills Section -->
+<section class="nav-pills-section">
+  <div class="container">
+    <ul class="nav-pills">
+      <li class="pill active" data-target="critical">Critical Issues ({{ critical_issues }})</li>
+      <li class="pill" data-target="passed">Passed Audits ({{ passed_audits }})</li>
+      <li class="pill" data-target="manual">Required Manual Audits ({{ manual_audits }})</li>
+      <li class="pill" data-target="na">Not Applicable ({{ not_applicable }})</li>
+    </ul>
+
+    <!-- Tables for each category -->
+    <div class="pill-content">
+      <!-- Critical Issues -->
+      <div id="critical" class="pill-panel active">
+        <h3>Violations</h3>
+        {% if violations %}
+          <table class="issues-table">
+            <thead>
+              <tr><th>Violation</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              {% for v in violations %}
+                <tr>
+                  <td>{{ v.id }}</td>
+                  <td>{{ v.description }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p>No critical issues found 🎉</p>
+        {% endif %}
+      </div>
+
+      <!-- Passed -->
+      <div id="passed" class="pill-panel">
+        <h3>Passed Audits</h3>
+        {% if passes %}
+          <table class="issues-table">
+            <thead>
+              <tr><th>Rule</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              {% for p in passes %}
+                <tr>
+                  <td>{{ p.id }}</td>
+                  <td>{{ p.description }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p>No passed audits available.</p>
+        {% endif %}
+      </div>
+
+      <!-- Manual -->
+      <div id="manual" class="pill-panel">
+        <h3>Manual Audits Required</h3>
+        {% if incomplete %}
+          <table class="issues-table">
+            <thead>
+              <tr><th>Check</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              {% for m in incomplete %}
+                <tr>
+                  <td>{{ m.id }}</td>
+                  <td>{{ m.description }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p>No manual audits required.</p>
+        {% endif %}
+      </div>
+
+      <!-- Not Applicable -->
+      <div id="na" class="pill-panel">
+        <h3>Not Applicable</h3>
+        {% if inapplicable %}
+          <table class="issues-table">
+            <thead>
+              <tr><th>Rule</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              {% for na in inapplicable %}
+                <tr>
+                  <td>{{ na.id }}</td>
+                  <td>{{ na.description }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p>No rules marked as not applicable.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI Fix Modal -->
+<div class="modal fade" id="aiFixModal" tabindex="-1" aria-labelledby="aiFixModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 16px;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="aiFixModalLabel" style="color: var(--primary);">
+           AI-Powered Fix Suggestions
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="ai-fix-body">
+        <p>Loading issues...</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+  <footer class="footer">
+  <div class="footer-container">
+    <!-- Left -->
+    <div class="footer-left">
+      <span class="footer-logo">AccessCheck</span>
+    </div>
+
+    <!-- Center -->
+    <div class="footer-center">
+      <p>Making the web inclusive for everyone</p>
+    </div>
+
+    <!-- Right -->
+    <div class="footer-right">
+      <a href="mailto:vasimkhan33991@gmail.com" aria-label="Email">
+        <i class="fas fa-envelope"></i>
+      </a>
+      <a href="https://github.com/mohammedVajim" target="_blank" aria-label="GitHub">
+        <i class="fab fa-github"></i>
+      </a>
+      <a href="https://linkedin.com/in/vasimkhan23" target="_blank" aria-label="LinkedIn">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 AccessCheck</p>
+  </div>
+</footer>
+
+  <!-- Bootstrap JS (with Popper.js bundled) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+  <script>
+    // Toggle
+    const toggleBtn = document.getElementById("theme-toggle");
+    const icon = toggleBtn.querySelector("i");
+    toggleBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      if (document.body.classList.contains("dark")) {
+        icon.classList.replace("fa-moon", "fa-sun");
+      } else {
+        icon.classList.replace("fa-sun", "fa-moon");
+      }
+    });
+
+ // Score progress 
+document.addEventListener("DOMContentLoaded", () => {
+  const circles = document.querySelectorAll(".progress-circle");
+  circles.forEach(circle => {
+    const val = circle.getAttribute("data-progress");
+    circle.style.setProperty("--progress", val);
+  });
+});
+
+
+  // Pills toggle
+  const pills = document.querySelectorAll(".pill");
+  const panels = document.querySelectorAll(".pill-panel");
+
+  pills.forEach(pill => {
+    pill.addEventListener("click", () => {
+      // Remove active from all
+      pills.forEach(p => p.classList.remove("active"));
+      panels.forEach(panel => panel.classList.remove("active"));
+
+      // Activate current
+      pill.classList.add("active");
+      document.getElementById(pill.dataset.target).classList.add("active");
+    });
+  });
+
+const violations = {{ violations_json|safe }};
+
+document.addEventListener("DOMContentLoaded", function () {
+  const fixBtn = document.getElementById("fix-btn");
+  const modalBody = document.getElementById("ai-fix-body");
+
+  fixBtn.addEventListener("click", async function () {
+    modalBody.innerHTML = "<p><i class='fas fa-spinner fa-spin'></i> Fetching AI suggestions...</p>";
+
+    if (!violations.length) {
+      modalBody.innerHTML = "<p>No accessibility issues found 🎉</p>";
+      return;
+    }
+
+    let htmlContent = "";
+
+    for (let i = 0; i < violations.length; i++) {
+      let violation = violations[i];
+
+      try {
+        const res = await fetch("/api/ai-fix/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken"),
+          },
+          body: JSON.stringify({ issue: violation.description }),
+        });
+
+        const data = await res.json();
+
+        // Clean up AI suggestion for readability
+        let cleanSuggestion = data.suggestion
+          ? data.suggestion.replace(/\d+\.\s+/g, "• ") // replace numbered lists with bullets
+                           .replace(/\n/g, "<br>")     // preserve line breaks
+          : "⚠️ Error fetching suggestion";
+
+        htmlContent += `
+          <div style="margin-bottom: 1rem; padding: 1rem; border: 1px solid var(--text-muted); border-radius: 8px;">
+            <b>Issue ${i + 1}:</b> ${violation.description}<br>
+            <b>AI Suggestion:</b>
+            <p style="margin-top: 0.3rem; font-weight: normal; font-size: 0.95rem; line-height: 1.4;">
+              ${cleanSuggestion}
+            </p>
+          </div>
+        `;
+      } catch (err) {
+        htmlContent += `
+          <div style="margin-bottom: 1rem; padding: 1rem; border: 1px solid red; border-radius: 8px;">
+            <b>Issue ${i + 1}:</b> ${violation.description}<br>
+            <b>AI Suggestion:</b> ⚠️ Failed to load suggestion
+          </div>
+        `;
+      }
+
+      modalBody.innerHTML = htmlContent;
+    }
+  });
+
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+});
+
+  </script>
+</body>
+</html>

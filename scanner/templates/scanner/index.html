@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Accessibility Checker</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'scanner/css/restyles.css' %}"/>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Merriweather:wght@700&family=Fira+Code&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">AccessCheck</div>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#insights">Insights</a></li>
+      <li><a href="{% url 'checklist' %}">Checklist</a></li>
+    </ul>
+    <button id="theme-toggle" aria-label="Toggle Theme">
+      <i class="fas fa-moon"></i>
+    </button>
+  </nav>
+
+  <section id="home" class="hero">
+    <div class="container">
+      <h1>Check Your Site Accessibility</h1>
+      <p>Quickly scan for WCAG compliance and get clear, actionable insights.</p>
+      <form class="scan-form" method="post" action="/check/">
+        {% csrf_token %}
+        <input type="url" name="url" placeholder="Enter website URL" required />
+        <button type="submit">Scan Now</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="features" class="features">
+  <div class="container">
+    <h2>Why Use Accessibility Analyzer</h2>
+    <div class="feature-grid">
+
+      <div class="feature-card">
+        <i class="fas fa-search"></i>
+        <h3>Automated Testing</h3>
+        <p>Quickly scan websites or HTML files for accessibility issues.</p>
+      </div>
+
+      <div class="feature-card">
+        <i class="fas fa-chart-bar"></i>
+        <h3>Detailed Reports</h3>
+        <p>View severity levels, error counts, and visual graphs.</p>
+      </div>
+
+      <div class="feature-card">
+        <i class="fas fa-lightbulb"></i>
+        <h3>Fix Suggestions</h3>
+        <p>Get clear solutions with references to WCAG guidelines.</p>
+      </div>
+
+      <div class="feature-card">
+        <i class="fas fa-file-pdf"></i>
+        <h3>PDF Export</h3>
+        <p>Download professional reports for audits or records.</p>
+      </div>
+
+      <div class="feature-card">
+        <i class="fas fa-code"></i>
+        <h3>Developer-Friendly</h3>
+        <p>Simple, lightweight, and easy to integrate into your workflow.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+ <section id="how-it-works" class="how-it-works">
+  <div class="container">
+    <h2>How It Works</h2>
+    <div class="steps-flow">
+
+      <div class="step-item">
+        <i class="fas fa-link"></i>
+        <h3>1. Enter URL or Upload File</h3>
+        <p>Provide the website link or your HTML file.</p>
+      </div>
+
+      <!-- <div class="arrow"><i class="fas fa-arrow-right"></i></div> -->
+
+      <div class="step-item">
+        <i class="fas fa-play-circle"></i>
+        <h3>2. Run a Scan</h3>
+        <p>Click scan to analyze accessibility issues instantly.</p>
+      </div>
+
+      <!-- <div class="arrow"><i class="fas fa-arrow-right"></i></div> -->
+
+      <div class="step-item">
+        <i class="fas fa-tachometer-alt"></i>
+        <h3>3. View Your Dashboard</h3>
+        <p>Explore scores, severity breakdowns, and graphs.</p>
+      </div>
+
+      <!-- <div class="arrow"><i class="fas fa-arrow-right"></i></div> -->
+
+      <div class="step-item">
+        <i class="fas fa-tools"></i>
+        <h3>4. Fix & Improve</h3>
+        <p>Follow suggestions with WCAG references to resolve issues.</p>
+      </div>
+
+      <!-- <div class="arrow"><i class="fas fa-arrow-right"></i></div> -->
+
+      <div class="step-item">
+        <i class="fas fa-file-download"></i>
+        <h3>5. Download Report</h3>
+        <p>Save a PDF version for future use or sharing.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+  <section id="insights" class="insights">
+  <div class="container">
+    <h2>Accessibility Insights at a Glance</h2>
+    <div class="insights-marquee">
+      <div class="marquee-line">
+        <span>See your overall accessibility score in one place.</span>
+      </div>
+      <div class="marquee-line">
+        <span>Identify high, medium, and low severity issues.</span>
+      </div>
+      <div class="marquee-line">
+        <span>Track total issues and issue count by severity.</span>
+      </div>
+      <div class="marquee-line">
+        <span>Get step-by-step guidance on how to fix each error.</span>
+      </div>
+      <!-- <div class="marquee-line">
+        <span>Learn with WCAG documentation links for deeper understanding.</span>
+      </div> -->
+    </div>
+  </div>
+</section>
+
+
+
+ <section id="checklist" class="checklist-cta">
+  <div class="container">
+    <h2>Accessibility Starts with a Checklist</h2>
+    <p class="subheadline">
+      Use our simple checklist to ensure your site meets accessibility standards from the start.
+    </p>
+    <a href="{% url 'checklist' %}" class="cta-button">Generate Checklist</a>
+  </div>
+</section>
+
+
+  <!-- <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 AccessCheck. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Accessibility</a>
+      </div>
+    </div>
+  </footer> -->
+
+ <footer class="footer">
+  <div class="footer-container">
+    <!-- Left -->
+    <div class="footer-left">
+      <span class="footer-logo">AccessCheck</span>
+    </div>
+
+    <!-- Center -->
+    <div class="footer-center">
+      <p>Making the web inclusive for everyone</p>
+    </div>
+
+    <!-- Right -->
+    <div class="footer-right">
+      <a href="mailto:vasimkhan33991@gmail.com" aria-label="Email">
+        <i class="fas fa-envelope"></i>
+      </a>
+      <a href="https://github.com/mohammedVajim" target="_blank" aria-label="GitHub">
+        <i class="fab fa-github"></i>
+      </a>
+      <a href="https://linkedin.com/in/vasimkhan23" target="_blank" aria-label="LinkedIn">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 AccessCheck</p>
+  </div>
+</footer>
+
+
+  <script>
+    const toggleBtn = document.getElementById("theme-toggle");
+    const icon = toggleBtn.querySelector("i");
+    toggleBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      if (document.body.classList.contains("dark")) {
+        icon.classList.replace("fa-moon", "fa-sun");
+      } else {
+        icon.classList.replace("fa-sun", "fa-moon");
+      }
+    });
+  </script>
+</body>
+</html>

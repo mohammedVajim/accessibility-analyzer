@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+*.pot
+*.pyc
+
+# Django
+db.sqlite3
+*.pyc
+.env
+
+# Node
+node_modules/
+package-lock.json
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Virtualenv
+venv/
+env/
